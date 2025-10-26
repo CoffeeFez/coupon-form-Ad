@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>كوبونات FEZ Café</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Bubblegum+Sans&family=Cairo:wght@400;700&display=swap" rel="stylesheet">
+  <!-- إضافة مكتبة intl-tel-input -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/css/intlTelInput.css">
+
+  <style>
+    :root {
+      --pink: #FF4081;
+      --bg: #FFCDD2;
+      --text: #222;
+      --muted: #555;
+      --white-transparent: rgba(255,255,255,0.95);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+    /* إضافة الـ animation للشعار */
+    @keyframes floatPulse {
+      0%,100% { transform: translateY(0) scale(1); }
+      50% { transform: translateY(-10px) scale(1.05); }
+    }
+
+    body, html {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      direction: rtl;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .form-wrapper {
+      width: 90%;
+      max-width: 450px;
+      background: var(--white-transparent);
+      border-radius: 18px;
+      box-shadow: 0 8px 28px rgba(31,38,135,0.12);
+      padding: 25px 20px;
+      text-align: center;
+    }
+
+    .logo {
+      font-family: 'Bubblegum Sans', cursive;
+      font-size: clamp(35px, 6vw, 65px);
+      letter-spacing: clamp(4px, 1.2vw, 10px);
+      margin-bottom: 5px;
+      direction: ltr;
+    }
+    /* تعديل أنماط الشعار لإضافة الـ animation وتحسين الظل */
+    .logo span {
+      display: inline-block;
+      animation: floatPulse 3s ease-in-out infinite;
+    }
+    .logo .f {
+      color: var(--pink);
+      animation-delay: 0s;
+      text-shadow: 2px 2px 8px rgba(255,64,129,0.4);
+    }
+    .logo .e {
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+      animation-delay: 0.2s;
+    }
+    .logo .z {
+      color: #fff;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.35);
+      animation-delay: 0.4s;
+    }
+
+    .sub-logo {
+      font-size: clamp(14px, 1.8vw, 18px);
+      letter-spacing: 3px;
+      color: var(--muted);
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+      text-align: right;
+    }
+    .form-group label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: 700;
+      font-size: 15px;
+    }
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 15px;
+      direction: ltr;
+      height: 38px;
+    }
+    .form-group input:focus,
+    .form-group select:focus {
+      border-color: var(--pink);
+      outline: none;
+    }
+
+    .error-msg {
+      color: var(--pink);
+      font-size: 12px;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 8px;
+      background-color: var(--pink);
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-top: 10px;
+      height: 36px;
+    }
+    .submit-btn:hover {
+      background-color: #e73370;
+    }
+
+    .form-note {
+      margin-top: 12px;
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .success-message {
+      color: var(--pink);
+      font-size: 20px;
+      display: none;
+      margin-top: 15px;
+      text-align: center;
+      font-weight: bold;
+      line-height: 1.6;
+    }
+    
+    /* إضافة نمط جديد للرسالة عند ظهورها وحدها */
+    .success-only {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 200px;
+    }
+    
+    /* إضافة أيقونة أكبر للنجاح */
+    .success-icon {
+      font-size: 50px;
+      margin-bottom: 20px;
+    }
+
+    /* أنماط إضافية لمكتبة الهاتف */
+    .iti {
+      width: 100%;
+      direction: ltr;
+    }
+    .iti__flag-container {
+      direction: ltr;
+    }
+    /* تعديل لتناسب التصميج الحالي */
+    .iti__selected-flag {
+      border-radius: 10px 0 0 10px;
+    }
+    .iti input {
+      border-radius: 10px;
+    }
+    /* تخصيص لون الحدوب عند التركيز */
+    .iti--focus .iti__selected-flag {
+      background-color: rgba(255, 64, 129, 0.05);
+    }
+    .iti input:focus {
+      border-color: var(--pink);
+      outline: none;
+    }
+    
+    /* تعديلات إضافية للتوافق مع RTL */
+    .phone-container {
+      direction: ltr;
+      text-align: left;
+    }
+    
+    .iti__country-list {
+      text-align: left;
+      direction: ltr;
+    }
+    
+    /* تعديل ارتفاع حقول الهاتف */
+    .iti input {
+      border-radius: 8px;
+      height: 38px;
+    }
+    
+    /* نمط للملاحظة تحت عنوان حقل الكوبون */
+    .coupon-note {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      margin-top: -1px;
+      text-align: right;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="form-wrapper">
+    <div class="logo">
+      <span class="f">F</span><span class="e">E</span><span class="z">Z</span>
+    </div>
+    <div class="sub-logo">SPECIALTY COFFEE</div>
+
+    <form id="couponForm" novalidate>
+      <div class="form-group">
+        <label for="name">الاسم الكامل</label>
+        <input type="text" id="name" name="name" placeholder="أدخل الاسم" required>
+        <div class="error-msg" id="error-name">يرجى إدخال الاسم</div>
+      </div>
+
+      <div class="form-group">
+        <label for="phone">رقم الهاتف</label>
+        <div class="phone-container">
+          <input type="tel" id="phone" name="phone" placeholder="أدخل رقم الهاتف" required>
+        </div>
+        <div class="error-msg" id="error-phone">يرجى إدخال رقم هاتف صحيح</div>
+      </div>
+
+      <div class="form-group">
+        <label for="coupon_value">قيمة الكوبون</label>
+        <!-- ملاحظة: سيتم إضافة المزيد من القيم لاحقاً -->
+        <div class="coupon-note">اختر قيمة الكوبون المناسبة لك</div>
+        <select id="coupon_value" name="coupon_value" required>
+          <option value="">اختر قيمة الكوبون</option>
+          <option value="500">500 ريال</option>
+          <option value="1000">1000 ريال</option>
+        </select>
+        <div class="error-msg" id="error-coupon">يرجى اختيار قيمة الكوبون</div>
+      </div>
+
+      <button type="submit" class="submit-btn">تأكيد الطلب</button>
+
+      <div class="form-note">بياناتك آمنة ولن يتم مشاركتها.</div>
+    </form>
+    
+    <!-- رسالة النجاح -->
+    <div class="success-message" id="successMsg">
+      <div class="success-icon">✅</div>
+      تم تسجيل طلبك بنجاح!<br>
+      شكرًا لاختيارك FEZ ☕️
+    </div>
+  </div>
+
+  <!-- إضافة مكتبات JavaScript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/intlTelInput.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js"></script>
+
+  <script>
+    // تهيئة مكتبة الهاتف الدولي
+    const phoneInput = document.querySelector("#phone");
+    const iti = window.intlTelInput(phoneInput, {
+      utilsScript: "https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.13/js/utils.js",
+      initialCountry: "sa", // السعودية كدولة افتراضية
+      preferredCountries: ["sa", "eg", "ae", "kw", "bh", "qa", "om"], // الدول المفضلة في المقدمة
+      separateDialCode: true, // عرض كود الدولة منفصلاً
+      autoPlaceholder: "aggressive", // تلميح تلقائي حسب الدولة
+      customPlaceholder: function(selectedCountryPlaceholder, selectedCountryData) {
+        return "أدخل " + selectedCountryPlaceholder;
+      },
+      // تعديل نصوص القائمة للغة العربية
+      i18n: {
+        search: "بحث",
+        searchPlaceholder: "بحث عن دولة..."
+      }
+    });
+    
+    // إضافة تعديل لتحسين تجربة المستخدم مع اللغة العربية
+    document.addEventListener('click', function(e) {
+      if (e.target.classList.contains('iti__search-input')) {
+        e.target.style.textAlign = 'left';
+        e.target.style.direction = 'ltr';
+      }
+    });
+
+    // التحقق من صحة النموذج
+    document.getElementById('couponForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      // مسح أي أخطاء سابقة
+      document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
+
+      let valid = true;
+      const name = document.getElementById('name').value.trim();
+      const couponValue = document.getElementById('coupon_value').value;
+
+      // التحقق من الاسم وقيمة الكوبون
+      if (!name) {
+        valid = false;
+        document.getElementById('error-name').style.display = 'block';
+      }
+      if (!couponValue) {
+        valid = false;
+        document.getElementById('error-coupon').style.display = 'block';
+      }
+
+      // التحقق من رقم الهاتف باستخدام المكتبة
+      if (!iti.isValidNumber()) {
+        valid = false;
+        document.getElementById('error-phone').textContent = 'يرجى إدخال رقم هاتف صحيح للدولة المختارة';
+        document.getElementById('error-phone').style.display = 'block';
+      }
+
+      // الحصول على الرقم بالتنسيق الدولي
+      const fullPhone = iti.getNumber();
+
+      if (!valid) return;
+
+      // بيانات للإرسال
+      const data = {
+        name,
+        phone: fullPhone,
+        coupon_value: couponValue
+      };
+      
+      console.log("Sending data:", data);
+      
+      // إرسال البيانات عبر webhook
+      fetch('https://amr319.shop/webhook-test/coupon_ad', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        
+        // إخفاء الفورم وإظهار رسالة النجاح
+        document.getElementById('couponForm').style.display = 'none';
+        const successMsg = document.getElementById('successMsg');
+        successMsg.style.display = 'block';
+        
+        // إضافة فئة للرسالة لتظهر في المنتصف
+        successMsg.classList.add('success-only');
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        // في حالة حدوث خطأ، نظهر رسالة النجاح على أي حال
+        document.getElementById('couponForm').style.display = 'none';
+        const successMsg = document.getElementById('successMsg');
+        successMsg.style.display = 'block';
+        successMsg.classList.add('success-only');
+      });
+    });
+  </script>
+</body>
+</html>
