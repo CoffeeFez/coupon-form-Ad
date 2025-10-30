@@ -318,15 +318,28 @@
         document.getElementById('error-coupon').style.display = 'block';
       }
 
-      // التحقق من رقم الهاتف باستخدام المكتبة
-      if (!iti.isValidNumber()) {
+
+      // التحقق من رقم الهاتف باستخدام المكتبة مع إضافة دعم للأرقام السعودية التي تبدأ بـ 574
+      const phoneVal = phoneInput.value.replace(/\D+/g, ''); // إزالة أي فواصل أو رموز
+      
+      // التحقق من صحة الرقم - إما عبر المكتبة أو عبر التحقق اليدوي للأرقام السعودية الخاصة
+      if (iti.isValidNumber() || /^057[0-9]{7}$/.test(phoneVal) || /^57[0-9]{7}$/.test(phoneVal)) {
+        // صحيح - الرقم إما صالح حسب المكتبة أو يطابق النمط المطلوب للأرقام السعودية
+      } else {
         valid = false;
-        document.getElementById('error-phone').textContent = 'يرجى إدخال رقم هاتف صحيح للدولة المختارة';
+        document.getElementById('error-phone').textContent = 'يرجى إدخال رقم هاتف صحيح';
         document.getElementById('error-phone').style.display = 'block';
       }
 
-      // الحصول على الرقم بالتنسيق الدولي
-      const fullPhone = iti.getNumber();
+      // الحصول على الرقم بالتنسيق الدولي أو تنسيقه يدويًا للأرقام السعودية الخاصة
+      let fullPhone;
+      if (!iti.isValidNumber() && (/^057[0-9]{7}$/.test(phoneVal) || /^57[0-9]{7}$/.test(phoneVal))) {
+        // تنسيق الرقم السعودي يدويًا
+        const localNumber = phoneVal.replace(/^0/, ''); // إزالة الصفر الأول إذا وجد
+        fullPhone = '+966' + localNumber;
+      } else {
+        fullPhone = iti.getNumber();
+      }
 
       if (!valid) return;
 
@@ -338,7 +351,6 @@
       };
       
       console.log("Sending data:", data);
-      
       // إرسال البيانات عبر webhook
       fetch('https://amr319.shop/webhook/coupon_ad', {
         method: 'POST',
